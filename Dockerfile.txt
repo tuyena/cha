@@ -1,0 +1,19 @@
+# Bắt đầu từ một image Python chính thức
+FROM python:3.9-slim
+
+# Cài đặt các gói cần thiết cho Kivy (các thư viện đồ họa)
+RUN apt-get update && apt-get install -y \
+    libgl1-mesa-glx \
+    libgles2-mesa \
+    && rm -rf /var/lib/apt/lists/*
+
+# Cài đặt các thư viện Python cần thiết từ requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy mã nguồn vào container
+COPY . /app
+WORKDIR /app
+
+# Chạy ứng dụng
+CMD ["python", "app.py"]
